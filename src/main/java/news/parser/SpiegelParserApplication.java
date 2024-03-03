@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import news.parser.controller.MainPageController;
 import news.parser.service.ArticleService;
-import news.parser.util.Util;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -27,10 +26,9 @@ public class SpiegelParserApplication extends Application {
 		ApplicationContext context = SpringApplication.run(SpiegelParserApplication.class);
 
 		ArticleService articleService = context.getBean(ArticleService.class);
-		Util util = context.getBean(Util.class);
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(PATH_TO_MAIN_PAGE_FXML));
-		loader.setControllerFactory(clazz -> new MainPageController(util, articleService));
+		loader.setControllerFactory(clazz -> new MainPageController(articleService));
 
 		Parent root = loader.load();
 

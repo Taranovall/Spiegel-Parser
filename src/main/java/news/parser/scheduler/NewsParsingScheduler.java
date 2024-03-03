@@ -1,11 +1,11 @@
-package news.parser.config;
+package news.parser.scheduler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import news.parser.entity.Article;
 import news.parser.service.ArticleService;
 import news.parser.util.Constant;
-import news.parser.util.Util;
+import news.parser.util.ArticleUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,9 +13,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.List;
@@ -23,14 +23,13 @@ import java.util.stream.Collectors;
 
 import static news.parser.util.Constant.*;
 
-@Configuration
+@Component
 @EnableScheduling
 @RequiredArgsConstructor
 @Slf4j
-public class NewsParserSchedulerConfig {
+public class NewsParsingScheduler {
 
     private final ArticleService articleService;
-    private final Util util;
 
     @Scheduled(fixedRateString = "${fixed-rate-ms}")
     public void parseNews() {
@@ -72,8 +71,8 @@ public class NewsParserSchedulerConfig {
 
         List<Article> articlesInBD = articleService.getAll();
         List<Article> articles = elements.stream()
-                .map(util::convertWebElementToArticle)
-                .filter(a -> util.isLessThanOneDayAgo(a.getPublicationTime()))
+                .map(ArticleUtil::convertWebElementToArticle)
+                .filter(a -> ArticleUtil.isLessThanOneDayAgo(a.getPublicationTime()))
                 .filter(a -> !articlesInBD.contains(a))
                 .collect(Collectors.toList());
 

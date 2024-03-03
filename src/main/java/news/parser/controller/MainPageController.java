@@ -13,8 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import news.parser.entity.Article;
 import news.parser.factory.ArticleCellFactory;
 import news.parser.service.ArticleService;
-import news.parser.util.Util;
-import org.springframework.stereotype.Controller;
+import news.parser.util.ArticleUtil;
 
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -23,12 +22,9 @@ import java.util.Map;
 
 import static news.parser.util.Constant.*;
 
-@Controller
 @RequiredArgsConstructor
 @Slf4j
 public class MainPageController {
-
-    private final Util util;
 
     private final ArticleService articleService;
     @FXML
@@ -79,9 +75,9 @@ public class MainPageController {
     public void fetchNews() {
         List<Article> allArticles = articleService.getAll();
 
-        articlesByTime.put(MORNING_TAB_TEXT, util.filterArticlesByTime(allArticles, LocalTime.of(0, 0), LocalTime.of(12, 0)));
-        articlesByTime.put(DAY_TAB_TEXT, util.filterArticlesByTime(allArticles, LocalTime.of(12, 0), LocalTime.of(18, 0)));
-        articlesByTime.put(EVENING_TAB_TEXT, util.filterArticlesByTime(allArticles, LocalTime.of(18, 0), LocalTime.of(0, 0)));
+        articlesByTime.put(MORNING_TAB_TEXT, ArticleUtil.filterArticlesByTime(allArticles, LocalTime.of(0, 0), LocalTime.of(12, 0)));
+        articlesByTime.put(DAY_TAB_TEXT, ArticleUtil.filterArticlesByTime(allArticles, LocalTime.of(12, 0), LocalTime.of(18, 0)));
+        articlesByTime.put(EVENING_TAB_TEXT, ArticleUtil.filterArticlesByTime(allArticles, LocalTime.of(18, 0), LocalTime.of(0, 0)));
 
         tabPane.getTabs().forEach(tab -> {
             ListView<Article> listView = (ListView<Article>) ((Tab) tab).getContent();

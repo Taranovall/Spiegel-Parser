@@ -1,6 +1,7 @@
 package news.parser.util;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import news.parser.entity.Article;
 import org.openqa.selenium.By;
@@ -20,9 +21,9 @@ import java.util.stream.Collectors;
 import static news.parser.util.Constant.ONE_DAY_IN_SECONDS;
 
 @Component
-@RequiredArgsConstructor
 @Slf4j
-public class Util {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class ArticleUtil {
 
     /**
      * Filters a list of articles based on their publication time falling within a specified time range.
@@ -34,7 +35,7 @@ public class Util {
      * @return A list containing only the articles whose publication time falls within the specified time range,
      * sorted in descending order based on publication time.
      */
-    public List<Article> filterArticlesByTime(List<Article> articles, LocalTime startTime, LocalTime endTime) {
+    public static List<Article> filterArticlesByTime(List<Article> articles, LocalTime startTime, LocalTime endTime) {
         return articles.stream()
                 .filter(article -> {
                     LocalTime articleTime = article.getPublicationTime().toLocalTime();
@@ -54,7 +55,7 @@ public class Util {
      * @param articleElement WebElement in which data about article is stored
      * @return object Article
      */
-    public Article convertWebElementToArticle(WebElement articleElement) {
+    public static Article convertWebElementToArticle(WebElement articleElement) {
         WebElement titleElement = articleElement.findElement(By.cssSelector(Constant.TITLE_ELEMENT_SELECTOR));
         String title = titleElement.getText().trim().split(System.lineSeparator())[1];
 
@@ -74,7 +75,7 @@ public class Util {
      * @param dateTime The date to be checked.
      * @return {@code true} if the specified date occurred less than 24 hours ago, {@code false} otherwise.
      */
-    public boolean isLessThanOneDayAgo(LocalDateTime dateTime) {
+    public static boolean isLessThanOneDayAgo(LocalDateTime dateTime) {
         LocalDateTime currentDateTime = LocalDateTime.now();
         long secondsDifference = ChronoUnit.SECONDS.between(dateTime, currentDateTime);
 
@@ -87,7 +88,7 @@ public class Util {
      * @param dateString date in string format
      * @return LocalDateTime
      */
-    private LocalDateTime convertStringToDate(String dateString) {
+    private static LocalDateTime convertStringToDate(String dateString) {
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern(Constant.DATE_PATTERN_ON_WEBSITE, Locale.GERMAN);
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern(Constant.MAIN_DATE_PATTERN);
 
