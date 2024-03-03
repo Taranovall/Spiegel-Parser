@@ -23,7 +23,7 @@ public class Constant {
 
     public static final String IFRAME_ID = "sp_message_iframe_975098";
 
-    public static final String WEBSITE_URL = "https://www.spiegel.de/thema/grupo_acs/";
+    public static final String WEBSITE_URL = "https://www.spiegel.de/thema/ukraine_konflikt/";
 
 
     public static final String DATE_PATTERN_ON_WEBSITE = "d. MMMM yyyy, HH.mm 'Uhr'";
